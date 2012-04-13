@@ -1,0 +1,4 @@
+-D haxe_209
+-cp src
+-cp test
+-main TestMain
