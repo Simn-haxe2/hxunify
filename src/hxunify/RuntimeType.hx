@@ -1,9 +1,15 @@
 package hxunify;
 
+typedef RuntimeClass =
+{
+	classType:Class<Dynamic>,
+	fields:Dynamic<RuntimeType>
+}
+
 enum RuntimeType
 {
 	TValue(v:Type.ValueType);
-	TIterable(base:Class<Dynamic>, param:RuntimeType);
+	TIterable(base:RuntimeClass, param:RuntimeType);
 	TObject(fields:Dynamic<RuntimeType>);
-	TClass(cl:Class<Dynamic>, fields:Dynamic<RuntimeType>);
+	TClass(cl:RuntimeClass);
 }

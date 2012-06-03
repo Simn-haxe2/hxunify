@@ -32,7 +32,7 @@ class Equality
 			case TIterable(c1, p1):
 				switch(rt2)
 				{
-					case TIterable(c2, p2): return c1 == c2 && equals(p1, p2);
+					case TIterable(c2, p2): return c1.classType == c2.classType && equals(p1, p2);
 					default: return false;
 				}
 			case TObject(f1):
@@ -43,10 +43,10 @@ class Equality
 					default:
 						return false;
 				}
-			case TClass(c1, f1):
+			case TClass(c1):
 				switch(rt2)
 				{
-					case TClass(c2, f2): return c1 == c2 && (!compareClassFields || fieldsEqual(f1, f2));
+					case TClass(c2): return c1.classType == c2.classType && (!compareClassFields || fieldsEqual(c1.fields, c2.fields));
 					default: return false;
 				}
 		}

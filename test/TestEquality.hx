@@ -129,9 +129,9 @@ class TestEquality extends haxe.unit.TestCase
 	
 	public function testIterable()
 	{
-		assertTrue(TIterable(Array, TValue(TInt)).equals(TIterable(Array, TValue(TInt))));
-		assertFalse(TIterable(Array, TValue(TInt)).equals(TIterable(List, TValue(TInt))));
-		assertFalse(TIterable(Array, TValue(TInt)).equals(TIterable(Array, TValue(TFloat))));
+		assertTrue(TIterable({classType:cast Array, fields: cast {}}, TValue(TInt)).equals(TIterable({classType: cast Array, fields: cast { } }, TValue(TInt))));
+		assertFalse(TIterable({classType:cast Array, fields: cast {}}, TValue(TInt)).equals(TIterable({classType:cast List, fields: cast {}}, TValue(TInt))));
+		assertFalse(TIterable({classType:cast Array, fields: cast {}}, TValue(TInt)).equals(TIterable({classType:cast Array, fields: cast {}}, TValue(TFloat))));
 	}
 	
 	public function testObject()
@@ -151,8 +151,8 @@ class TestEquality extends haxe.unit.TestCase
 	
 	public function testClass()
 	{
-		assertTrue(RuntimeType.TClass(C, null).equals(RuntimeType.TClass(C, null)));
-		assertFalse(RuntimeType.TClass(C, null).equals(RuntimeType.TClass(D, null)));
+		assertTrue(RuntimeType.TClass({classType: cast C, fields:null}).equals(RuntimeType.TClass({classType: cast C, fields:null})));
+		assertFalse(RuntimeType.TClass({classType: cast C, fields:null}).equals(RuntimeType.TClass({classType: cast D, fields:null})));
 	}
 	
 	public function testIsIterable()

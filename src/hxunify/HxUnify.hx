@@ -12,10 +12,9 @@ class HxUnify
 	static public function unify(it:Iterable<Dynamic>, unifyClassFields = false):RuntimeType
 	{
 		var inst = new Unificator(unifyClassFields);
-		
 		for (el in it)
 			inst.unify(el);
-		
+
 		if (inst.rt == null) return TValue(TUnknown);
 		return inst.rt;
 	}
@@ -33,21 +32,23 @@ class HxUnify
 				var ctx = inContext.copy();
 				ctx.push(cl);
 
+				var fields = { };
+				if (unifyClassFields)
+				{
+					#if flash9
+						fields = Fld.getClassFields(o, cl, ctx, true);
+					#else
+						var nFields = Fld.getFields(o, ctx, true);
+						//for (circular in nFields.circular)
+							//Reflect.setField(nFields.fields, circular, type);
+						fields = cast nFields.fields;
+					#end
+				}
+	
 				if (isIterable(o))
-					return TIterable(cl, unify(o, unifyClassFields));
-
-				if (!unifyClassFields)
-					return TClass(cl, { } );
-						
-				#if flash9
-					return TClass(cl, Fld.getClassFields(o, cl, ctx, true));
-				#else
-					var fields = Fld.getFields(o, ctx, true);
-					var type = TClass(cl, fields.fields);
-					for (circular in fields.circular)
-						Reflect.setField(fields.fields, circular, type);
-					return type;
-				#end
+					return TIterable( { classType: cl, fields: cast fields }, unify(o, unifyClassFields));
+				else
+					return TClass( { classType:cl, fields: cast fields } );
 			default:
 				return TValue(t);
 		}
@@ -60,14 +61,14 @@ class HxUnify
 		} catch (e:Dynamic) { }
 		return false;
 	}
-	
+
 	static public function toString(rt:RuntimeType)
 	{
 		switch(rt)
 		{
 			case TValue(v): return Std.string(v);
 			case TIterable(b, p): return Std.string(b) + "<" +toString(p) + ">";
-			case TClass(c, f): return Std.string(c);
+			case TClass(c): return Std.string(c.classType);
 			case TObject(f): return Std.string(f);
 		}
 	}

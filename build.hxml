@@ -21,3 +21,7 @@ build_base.hxml
 --next
 build_base.hxml
 -cpp bin/cpp
+
+--next
+build_base.hxml
+-java bin/java
